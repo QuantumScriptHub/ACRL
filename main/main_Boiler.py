@@ -2,7 +2,7 @@ import os
 import subprocess
 
 if __name__ == '__main__':
-    all_files = os.listdir(os.path.join('../datasets', 'Boiler'))
+    all_files = os.listdir(os.path.join('../../datasets', 'Boiler'))
 
     files = [name[:-4] for name in all_files if name.endswith('.csv')]
 

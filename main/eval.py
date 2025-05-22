@@ -158,7 +158,7 @@ def main(args):
 if __name__ == '__main__':
     parser = ArgumentParser(description="parse args")
 
-    parser.add_argument('-emf', '--experiments_main_folder', type=str, default='experiments_DANN')
+    parser.add_argument('-emf', '--experiments_main_folder', type=str, default='results')
     parser.add_argument('-ef', '--experiment_folder', type=str, default='default')
     parser.add_argument('--id_src', type=str, default='1-1')
     parser.add_argument('--id_trg', type=str, default='1-5')

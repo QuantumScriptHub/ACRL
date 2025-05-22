@@ -51,7 +51,7 @@ def main(args):
     eval_batch_size = args.eval_batch_size
     num_val_iteration = args.num_val_iteration
 
-    # LOAD SOURCE and TARGET datasets (it is MIMIC-IV vs. AUMC by default)
+    # LOAD SOURCE and TARGET datasets
     dataset_src = get_dataset(args, domain_type="source", split_type="train")
     dataset_val_src = get_dataset(args, domain_type="source", split_type="val")
 
@@ -233,11 +233,11 @@ if __name__ == '__main__':
     parser.add_argument('--weight_loss_src_sup', type=float, default=0.1)
     parser.add_argument('--weight_loss_trg_inj', type=float, default=0.1)
 
-    parser.add_argument('-emf', '--experiments_main_folder', type=str, default='experiments_DANN')
+    parser.add_argument('-emf', '--experiments_main_folder', type=str, default='results')
     parser.add_argument('-ef', '--experiment_folder', type=str, default='smd')
 
-    parser.add_argument('--path_src', type=str, default='../datasets/MSL_SMAP') #../datasets/Boiler/   ../datasets/MSL_SMAP
-    parser.add_argument('--path_trg', type=str, default='../datasets/MSL_SMAP') #../datasets/SMD/test
+    parser.add_argument('--path_src', type=str, default='../../datasets/MSL_SMAP') #../datasets/Boiler/   ../datasets/MSL_SMAP
+    parser.add_argument('--path_trg', type=str, default='../../datasets/MSL_SMAP') #../datasets/SMD/test
     parser.add_argument('--age_src', type=int, default=-1)
     parser.add_argument('--age_trg', type=int, default=-1)
     parser.add_argument('--id_src', type=str, default='1-5')

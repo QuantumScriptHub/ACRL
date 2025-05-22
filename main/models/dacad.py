@@ -3,10 +3,15 @@ import sys
 sys.path.append("../..")
 import torch
 import torch.nn as nn
-# Import our encoder
 from utils.tcn_no_norm import TemporalConvNet
 from utils.mlp import MLP
-from main.models.models import DeepSVDD
+import math
+
+import torch
+import torch.nn.functional as F
+from torch import nn
+from torch.autograd import Function
+from torch.nn.utils import weight_norm
 
 # Helper function for reversing the discriminator backprop
 from torch.autograd import Function
@@ -228,3 +233,70 @@ class DACAD_NN(nn.Module):
         dist, center, squared_radius = self.predictor(q, static)
 
         return dist  # y
+
+
+class DeepSVDD(nn.Module):
+    def __init__(self, input_dim, hidden_dim, output_dim, use_batch_norm):
+        super(DeepSVDD, self).__init__()
+
+        # Encoder layers
+        # self.encoder = nn.Sequential(
+        #     nn.Linear(input_dim, hidden_dim),
+        #     nn.ReLU(inplace=True),
+        #     nn.Linear(hidden_dim, hidden_dim),
+        #     nn.ReLU(inplace=True),
+        # )
+
+        # Center and radius of the hypersphere
+        self.center = nn.Parameter(torch.Tensor(input_dim))
+        self.radius = nn.Parameter(torch.Tensor(1))
+
+        # # Decoder layers (optional)
+        # self.decoder = nn.Sequential(
+        #     nn.Linear(hidden_dim, hidden_dim),
+        #     nn.ReLU(inplace=True),
+        #     nn.Linear(hidden_dim, output_dim),
+        # )
+        #
+        # # Batch normalization
+        # self.use_batch_norm = use_batch_norm
+        # if use_batch_norm:
+        #     self.batch_norm = nn.BatchNorm1d(hidden_dim)
+
+        # Initialize parameters
+        self._init_weights()
+
+    def _init_weights(self):
+        # nn.init.xavier_uniform_(self.encoder[0].weight)
+        # nn.init.constant_(self.encoder[0].bias, 0.0)
+        # nn.init.xavier_uniform_(self.encoder[2].weight)
+        # nn.init.constant_(self.encoder[2].bias, 0.0)
+        #
+        # if self.use_batch_norm:
+        #     nn.init.constant_(self.batch_norm.weight, 1)
+        #     nn.init.constant_(self.batch_norm.bias, 0)
+
+        nn.init.constant_(self.center, 0.0)
+        nn.init.constant_(self.radius, 0.0)
+
+    def forward(self, x, statics):
+        # # Encode the input
+        # encoded = self.encoder(x)
+        #
+        # # Apply batch normalization if enabled
+        # if self.use_batch_norm:
+        #     encoded = self.batch_norm(encoded)
+        #
+        # decoded = self.decoder(encoded)
+        # encoded = x.clone()
+        # decoded = x.clone()
+        tmp_x = x.clone()
+
+        # Calculate the distance to the center
+        dist = torch.sum((tmp_x - self.center) ** 2, dim=1)
+
+        # Calculate the squared radius
+        squared_radius = self.radius ** 2
+
+        # Return the encoded representation, distance, and squared radius
+        return dist, self.center, squared_radius

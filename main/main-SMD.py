@@ -2,7 +2,7 @@ import os
 import subprocess
 
 if __name__ == '__main__':
-    all_files = os.listdir(os.path.join('../datasets', 'SMD/train/'))
+    all_files = os.listdir(os.path.join('../../datasets', 'SMD/train/'))
     files = [file for file in all_files if file.startswith('machine-')]
     files = sorted(files)
     for src in ['machine-1-1.txt', 'machine-2-3.txt', 'machine-3-7.txt', 'machine-1-5.txt']:
