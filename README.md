@@ -103,11 +103,14 @@ If you use this code in your research, please cite the following article:
 
 ```bibtex
 @article{darban2024dacad,
-  title={DACAD: Domain Adaptation Contrastive Learning for Anomaly Detection in Multivariate Time Series},
-  author={Darban, Zahra Zamanzadeh and Yang, Yiyuan and Webb, Geoffrey I and Aggarwal, Charu C. and Wen, Qingsong and Salehi, Mahsa},
-  journal={arXiv preprint arXiv:2404.11269},
-  year={2024}
-}
+  author={Darban, Zahra Zamanzadeh and Yang, Yiyuan and Webb, Geoffrey I. and Aggarwal, Charu C. and Wen, Qingsong and Pan, Shirui and Salehi, Mahsa},
+  journal={IEEE Transactions on Knowledge and Data Engineering}, 
+  title={DACAD: Domain Adaptation Contrastive Learning for Anomaly Detection in Multivariate Time Series}, 
+  year={2025},
+  volume={37},
+  number={8},
+  pages={4485-4496},
+  doi={10.1109/TKDE.2025.3569909}}
 ```
 
 ## License
