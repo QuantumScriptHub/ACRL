@@ -102,7 +102,7 @@ We evaluate the performance of the proposed model and compare the results across
 If you use this code in your research, please cite the following article:
 
 ```bibtex
-@article{darban2024dacad,
+@article{darban2025dacad,
   author={Darban, Zahra Zamanzadeh and Yang, Yiyuan and Webb, Geoffrey I. and Aggarwal, Charu C. and Wen, Qingsong and Pan, Shirui and Salehi, Mahsa},
   journal={IEEE Transactions on Knowledge and Data Engineering}, 
   title={DACAD: Domain Adaptation Contrastive Learning for Anomaly Detection in Multivariate Time Series}, 
