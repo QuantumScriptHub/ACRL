@@ -19,19 +19,25 @@ def get_logger(log_file):
 
 
 # We keep the dictionary of metrics for each dataset and task
-dict_metrics = {"smd": {"acc": accuracy_score, "mac_f1": f1_score, "w_f1": f1_score},
-                "msl": {"acc": accuracy_score, "mac_f1": f1_score, "w_f1": f1_score},
-                "boiler": {"acc": accuracy_score, "mac_f1": f1_score, "w_f1": f1_score},
+dict_metrics = {"msl": {"acc": accuracy_score, "mac_f1": f1_score, "w_f1": f1_score},
+                "cats": {"acc": accuracy_score, "mac_f1": f1_score, "w_f1": f1_score},
+                "cmapss": {"acc": accuracy_score, "mac_f1": f1_score, "w_f1": f1_score},
+                "phm08": {"acc": accuracy_score, "mac_f1": f1_score, "w_f1": f1_score},
+                "mba": {"acc": accuracy_score, "mac_f1": f1_score, "w_f1": f1_score},
                 }
 
 
 def get_dataset_type(args):
-    if "SMD" in args.path_src:
-        return "smd"
-    elif "MSL" in args.path_src:
+    if "MSL" in args.path_src:
         return "msl"
-    elif "Boiler" in args.path_src:
-        return "boiler"
+    elif "CATS" in args.path_src:
+        return "cats"
+    elif "MBA" in args.path_src:
+        return "mba"
+    elif "C-MAPSS" in args.path_src:
+        return "cmapss"
+    elif "PHM08" in args.path_src:
+        return "phm08"
     else:
         return "sensor"
 
@@ -97,11 +103,15 @@ class PredictionMeter(object):
         self.dict_metrics = dict_metrics[self.dataset_type]
 
     def update(self, target, output, id_patient=None, stay_hour=None):
-        if self.dataset_type == "smd":
+        if self.dataset_type == "msl":
             output_np = output.detach().cpu().numpy().flatten()
-        elif self.dataset_type == "msl":
+        elif self.dataset_type == "cats":
             output_np = output.detach().cpu().numpy().flatten()
-        elif self.dataset_type == "boiler":
+        elif self.dataset_type == "mba":
+            output_np = output.detach().cpu().numpy().flatten()
+        elif self.dataset_type == "cmapss":
+            output_np = output.detach().cpu().numpy().flatten()
+        elif self.dataset_type == "phm08":
             output_np = output.detach().cpu().numpy().flatten()
         else:
             output_np = output.detach().cpu().numpy().argmax(axis=1).flatten()

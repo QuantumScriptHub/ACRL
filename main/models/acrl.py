@@ -1,6 +1,6 @@
 import sys
 
-sys.path.append("../..")
+# sys.path.append("../..")
 import torch
 import torch.nn as nn
 from utils.tcn_no_norm import TemporalConvNet
@@ -46,13 +46,13 @@ class Discriminator(nn.Module):
         return self.model(x)
 
 
-class DACAD_NN(nn.Module):
+class ACRL_NN(nn.Module):
 
     def __init__(self, num_inputs, output_dim, num_channels, num_static, mlp_hidden_dim=256,
                  use_batch_norm=True, num_neighbors=1, kernel_size=2, stride=1, dilation_factor=2,
                  dropout=0.2, K=24576, m=0.999, T=0.07):
 
-        super(DACAD_NN, self).__init__()
+        super(ACRL_NN, self).__init__()
 
         self.sigmoid = nn.Sigmoid()
 

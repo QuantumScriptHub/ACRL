@@ -1,5 +1,5 @@
 import sys
-sys.path.append("..")
+# sys.path.append("..")
 import os
 import numpy as np
 import math
@@ -11,15 +11,15 @@ from utils.tcn_no_norm import TemporalConvNet
 from utils.augmentations import Augmenter, concat_mask
 from utils.util_progress_log import AverageMeter, PredictionMeter, get_dataset_type
 from utils.loss import PredictionLoss, SupervisedContrastiveLoss
-from models.dacad import DACAD_NN
+from .models.acrl import ACRL_NN
 import torch.nn.functional as F
 from sklearn.metrics import accuracy_score
 
 
 #Given the args, it will return the algorithm directly
 def get_algorithm(args, input_channels_dim, input_static_dim):
-    if args.algo_name == "dacad":
-        return DACAD(args, input_channels_dim, input_static_dim)
+    if args.algo_name == "acrl":
+        return ACRL(args, input_channels_dim, input_static_dim)
     else:
         return None
 
@@ -52,6 +52,18 @@ class Base_Algorithm(nn.Module):
         elif self.dataset_type == "msl":
             self.main_pred_metric = "avg_prc"
         elif self.dataset_type == "boiler":
+            self.main_pred_metric = "avg_prc"
+        elif "cats" in self.dataset_type:
+            self.main_pred_metric = "avg_prc"
+        elif "swat" in self.dataset_type:
+            self.main_pred_metric = "avg_prc"
+        elif "mba" in self.dataset_type:
+            self.main_pred_metric = "avg_prc"
+        elif "cmapss" in self.dataset_type:
+            self.main_pred_metric = "avg_prc"
+        elif "phm08" in self.dataset_type:
+            self.main_pred_metric = "avg_prc"
+        elif "alfa" in self.dataset_type:
             self.main_pred_metric = "avg_prc"
         #If it is sensor data, we will use Macro f1
         else:
@@ -89,6 +101,18 @@ class Base_Algorithm(nn.Module):
             return AverageMeter('ROC AUC', ':6.2f')
         elif self.dataset_type == "boiler":
             return AverageMeter('ROC AUC', ':6.2f')
+        elif "cats" in self.dataset_type:
+            return AverageMeter('ROC AUC', ':6.2f')
+        elif "swat" in self.dataset_type:
+            return AverageMeter('ROC AUC', ':6.2f')
+        elif "mba" in self.dataset_type:
+            return AverageMeter('ROC AUC', ':6.2f')
+        elif "cmapss" in self.dataset_type:
+            return AverageMeter('ROC AUC', ':6.2f')
+        elif "phm08" in self.dataset_type:
+            return AverageMeter('ROC AUC', ':6.2f')
+        elif "alfa" in self.dataset_type:
+            return AverageMeter('ROC AUC', ':6.2f')
         else:
             return AverageMeter('Macro F1', ':6.2f')
 
@@ -99,18 +123,18 @@ class Base_Algorithm(nn.Module):
 
 
 
-#DACAD Algorithm
-class DACAD(Base_Algorithm):
+#ACRL Algorithm
+class ACRL(Base_Algorithm):
 
     def __init__(self, args, input_channels_dim, input_static_dim):
 
-        super(DACAD, self).__init__(args)
+        super(ACRL, self).__init__(args)
 
         self.input_channels_dim = input_channels_dim
         self.input_static_dim = input_static_dim
 
         #different from other algorithms, we import entire model at onces. (i.e. no separate feature extractor or classifier)
-        self.model = DACAD_NN(num_inputs=(1+args.use_mask)*input_channels_dim, output_dim=self.output_dim, num_channels=self.num_channels, num_static=input_static_dim,
+        self.model = ACRL_NN(num_inputs=(1+args.use_mask)*input_channels_dim, output_dim=self.output_dim, num_channels=self.num_channels, num_static=input_static_dim,
             mlp_hidden_dim=args.hidden_dim_MLP, use_batch_norm=args.use_batch_norm, kernel_size=args.kernel_size_TCN,
             stride=args.stride_TCN, dilation_factor=args.dilation_factor_TCN, dropout=args.dropout, K=args.queue_size, m=args.momentum)
 
@@ -227,7 +251,7 @@ class DACAD(Base_Algorithm):
         checkpoint = torch.load(experiment_folder_path+"/model_best.pth.tar")
         self.model.load_state_dict(checkpoint['state_dict'])
 
-    #We need to overwrite below functions for DACAD
+    #We need to overwrite below functions for ACRL
     def predict_trg(self, sample_batched):
 
         seq_t = self.concat_mask(sample_batched['sequence'], sample_batched['sequence_mask'], self.args.use_mask)

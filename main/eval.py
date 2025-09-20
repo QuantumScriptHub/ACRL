@@ -1,6 +1,6 @@
 import sys
 
-sys.path.append("..")
+# sys.path.append("..")
 import os
 import numpy as np
 import pandas as pd
@@ -17,7 +17,7 @@ import json
 from argparse import ArgumentParser
 from collections import namedtuple
 
-from algorithms import get_algorithm
+from .algorithms import get_algorithm
 
 
 def main(args):
@@ -34,18 +34,15 @@ def main(args):
     # Some functions and variables for logging
     dataset_type = get_dataset_type(saved_args)
 
+    # ===================================================================
+    # --- [ 唯一修改点 ]：修改 log_scores 函数以打印 "roc_auc" ---
+    # ===================================================================
     def log_scores(args, dataset_type, metrics_pred):
-        if dataset_type == "smd":
-            log("AUPRC score is : %.4f " % (metrics_pred["avg_prc"]))
-            log("Best F1 score is : %.4f " % (metrics_pred["best_f1"]))
-            log("Best Prec score is : %.4f " % (metrics_pred["best_prec"]))
-            log("Best Rec score is : %.4f " % (metrics_pred["best_rec"]))
-        elif dataset_type == "msl":
-            log("AUPRC score is : %.4f " % (metrics_pred["avg_prc"]))
-            log("Best F1 score is : %.4f " % (metrics_pred["best_f1"]))
-            log("Best Prec score is : %.4f " % (metrics_pred["best_prec"]))
-            log("Best Rec score is : %.4f " % (metrics_pred["best_rec"]))
-        elif dataset_type == "boiler":
+        # 将多个 elif 合并，因为它们的打印内容相同
+        if dataset_type in ["smd", "msl", "boiler", "cats", "swat", "mba", "cmapss", "phm08","alfa"]:
+            # 直接读取由 get_metrics() 计算好的 "roc_auc" 值并打印
+            if "roc_auc" in metrics_pred:
+                log("AUROC score is : %.4f " % (metrics_pred["roc_auc"]))
             log("AUPRC score is : %.4f " % (metrics_pred["avg_prc"]))
             log("Best F1 score is : %.4f " % (metrics_pred["best_f1"]))
             log("Best Prec score is : %.4f " % (metrics_pred["best_prec"]))
@@ -54,6 +51,7 @@ def main(args):
             log("Accuracy score is : %.4f " % (metrics_pred["acc"]))
             log("Macro F1 score is : %.4f " % (metrics_pred["mac_f1"]))
             log("Weighted F1 score is : %.4f " % (metrics_pred["w_f1"]))
+    # ===================================================================
 
     batch_size = saved_args.batch_size
     eval_batch_size = saved_args.eval_batch_size

@@ -1,5 +1,5 @@
 import sys
-sys.path.append("..")
+# sys.path.append("..")
 import os
 import numpy as np
 import random
@@ -9,7 +9,7 @@ from torch.utils.data import DataLoader
 from utils.util_progress_log import ProgressMeter, get_logger, get_dataset_type
 import json
 from argparse import ArgumentParser
-from algorithms import get_algorithm
+from .algorithms import get_algorithm
 
 
 def main(args):
@@ -40,6 +40,24 @@ def main(args):
             log("AUPRC score is : %.4f " % (metrics_pred["avg_prc"]))
             log("Best F1 score is : %.4f " % (metrics_pred["best_f1"]))
         elif dataset_type == "boiler":
+            log("AUPRC score is : %.4f " % (metrics_pred["avg_prc"]))
+            log("Best F1 score is : %.4f " % (metrics_pred["best_f1"]))
+        elif dataset_type == "cats":
+            log("AUPRC score is : %.4f " % (metrics_pred["avg_prc"]))
+            log("Best F1 score is : %.4f " % (metrics_pred["best_f1"]))
+        elif dataset_type == "swat":
+            log("AUPRC score is : %.4f " % (metrics_pred["avg_prc"]))
+            log("Best F1 score is : %.4f " % (metrics_pred["best_f1"]))
+        elif dataset_type == "mba":
+            log("AUPRC score is : %.4f " % (metrics_pred["avg_prc"]))
+            log("Best F1 score is : %.4f " % (metrics_pred["best_f1"]))
+        elif dataset_type == "cmapss":
+            log("AUPRC score is : %.4f " % (metrics_pred["avg_prc"]))
+            log("Best F1 score is : %.4f " % (metrics_pred["best_f1"]))
+        elif dataset_type == "phm08":
+            log("AUPRC score is : %.4f " % (metrics_pred["avg_prc"]))
+            log("Best F1 score is : %.4f " % (metrics_pred["best_f1"]))
+        elif dataset_type == "alfa":
             log("AUPRC score is : %.4f " % (metrics_pred["avg_prc"]))
             log("Best F1 score is : %.4f " % (metrics_pred["best_f1"]))
         else:
@@ -172,6 +190,16 @@ def main(args):
                         cur_val_score = metrics_pred_val_src["best_f1"]
                     elif dataset_type == "smd":
                         cur_val_score = metrics_pred_val_trg["best_f1"]
+                    elif dataset_type == "cats":
+                        cur_val_score = metrics_pred_val_trg["best_f1"]
+                    elif dataset_type == "swat":
+                        cur_val_score = metrics_pred_val_trg["best_f1"]
+                    elif dataset_type == "mba":
+                        cur_val_score = metrics_pred_val_trg["best_f1"]
+                    elif dataset_type == "phm08":
+                        cur_val_score = metrics_pred_val_trg["best_f1"]
+                    elif dataset_type == "alfa":
+                        cur_val_score = metrics_pred_val_trg["best_f1"]
                     else:
                         cur_val_score = metrics_pred_val_src["mac_f1"]
 
@@ -199,13 +227,13 @@ if __name__ == '__main__':
 
     parser = ArgumentParser(description="parse args")
 
-    parser.add_argument('--algo_name', type=str, default='dacad')
+    parser.add_argument('--algo_name', type=str, default='acrl')
 
     parser.add_argument('-dr', '--dropout', type=float, default=0.1)
-    parser.add_argument('-mo', '--momentum', type=float, default=0.99)  # DACAD
-    parser.add_argument('-qs', '--queue_size', type=int, default=98304)  # DACAD
+    parser.add_argument('-mo', '--momentum', type=float, default=0.99)  # ACRL
+    parser.add_argument('-qs', '--queue_size', type=int, default=98304)  # ACRL
     parser.add_argument('--use_batch_norm', action='store_true')
-    parser.add_argument('--use_mask', action='store_true')  # DACAD
+    parser.add_argument('--use_mask', action='store_true')  # ACRL
     parser.add_argument('-wr', '--weight_ratio', type=float, default=10.0)
     parser.add_argument('-bs', '--batch_size', type=int, default=200)  # 2048)
     parser.add_argument('-ebs', '--eval_batch_size', type=int, default=200)  # 2048)
@@ -224,7 +252,7 @@ if __name__ == '__main__':
 
     # The weight of the domain classification loss
     parser.add_argument('-w_d', '--weight_domain', type=float, default=0.1)
-    # Below weights are defined for DACAD
+    # Below weights are defined for ACRL
     parser.add_argument('--weight_loss_src', type=float, default=0.0)
     parser.add_argument('--weight_loss_trg', type=float, default=0.0)
     parser.add_argument('--weight_loss_ts', type=float, default=0.0)
@@ -236,8 +264,8 @@ if __name__ == '__main__':
     parser.add_argument('-emf', '--experiments_main_folder', type=str, default='results')
     parser.add_argument('-ef', '--experiment_folder', type=str, default='smd')
 
-    parser.add_argument('--path_src', type=str, default='../../datasets/MSL_SMAP') #../datasets/Boiler/   ../datasets/MSL_SMAP
-    parser.add_argument('--path_trg', type=str, default='../../datasets/MSL_SMAP') #../datasets/SMD/test
+    parser.add_argument('--path_src', type=str, default='../../datasets/MSL_SMAP') 
+    parser.add_argument('--path_trg', type=str, default='../../datasets/MSL_SMAP') 
     parser.add_argument('--age_src', type=int, default=-1)
     parser.add_argument('--age_trg', type=int, default=-1)
     parser.add_argument('--id_src', type=str, default='1-5')
